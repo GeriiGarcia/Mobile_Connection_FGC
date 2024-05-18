@@ -1,8 +1,19 @@
+//import 'dart:js_util';
+// Dart packadges
 import 'package:flutter/material.dart';
+
+import 'dart:math';
+
+//My files
+import 'current_signal_text.dart';
+import 'start_stop_button.dart';
+import 'main_content.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart' show rootBundle;
+
 
 void main() {
   runApp(const MyApp());
@@ -15,11 +26,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'FGC_connectivity',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        // This is the theme of your application.
+        primarySwatch: Colors.green,
+
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'FGC connection app'),
     );
   }
 }
@@ -43,9 +57,76 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  // -------------------------------------------------- Variables
+  // FGC data
   String _dataFromApi = 'Loading...';
   String _location = 'Location: Loading...';
   List<String> _uniqueRouteShortNames = [];
+  
+  // Controll variables
+  String signal = '0';
+  int stage = 0; // 0: Start, 1: Running, 2: end
+  List<bool> startDataGiven = [
+    false, // line
+    false, // origin
+    false // direction
+  ];
+  bool endDataGiven = false; // destination
+
+  // Start menu lists
+  List<String> lineItems = ['---', 'S1', 'S2'];
+  List<String> startStationItems = [
+    '---',
+    'Bellaterra',
+    'Universitat Autonoma'
+  ];
+  List<String> directionItems = ['---', 'Sabadell', 'Barcelona'];
+  List<String?> selectedChoices = ['---', '---', '---'];
+
+  // -------------------------------------------------- Funcions
+  // ignore: non_constant_identifier_names
+  String getConnectivity() {
+    final random = Random();
+
+    return random.nextInt(100).toString();
+  }
+
+  void updateStage(int currentStage) {
+    bool canSetState = false;
+
+    if (startDataGiven[0] &&
+        startDataGiven[1] &&
+        startDataGiven[2] &&
+        stage == 0) {
+      canSetState = true; // Podem cambiar d'estat
+    } else if (endDataGiven && stage == 2) {
+      canSetState = true;
+    }
+
+    if (canSetState) {
+      setState(() {
+        if (currentStage == 2) {
+          // Aquí pot anar lo de enviar/finalitzar el fitxer
+          stage = 0;
+        } else {
+          stage++;
+        }
+      });
+    } else {
+      // Podriem mostrar un missatge en plan "has d'omplir els camps"
+    }
+  }
+
+  void updateMainMenu(String? line, String? station, String? destination) {
+    setState(() {
+      selectedChoices = [line, station, destination];
+    });
+  }
+
+  // -------------------------------------------------- Override
+
+  
 
   @override
   void initState() {
@@ -82,88 +163,45 @@ class _MyHomePageState extends State<MyHomePage> {
     return dest;
   }
 
-/*
-  Future<void> _getLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
 
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      setState(() {
-        _location = 'Location services are disabled.';
-      });
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        setState(() {
-          _location = 'Location permissions are denied';
-        });
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      setState(() {
-        _location = 'Location permissions are permanently denied, we cannot request permissions.';
-      });
-      return;
-    } 
-
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    setState(() {
-      _location = 'Lat: ${position.latitude}, Lon: ${position.longitude}';
-    });
-  }
-
-
-  Future<void> fetchData() async {
-    final response = await http.get(Uri.parse('https://api.example.com/data'));
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-      setState(() {
-        _dataFromApi = jsonData['message'];
-      });
-    } else {
-      setState(() {
-        _dataFromApi = 'Failed to load data';
-      });
-    }
-  }
-  */
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 20),
-            const Text('Unique Route Short Names:'),
-            _uniqueRouteShortNames.isNotEmpty
-                ? Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _uniqueRouteShortNames.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(_uniqueRouteShortNames[index]),
-                        );
-                      },
-                    ),
-                  )
-                : const Text('Loading...'),
-          ],
-        ),
+
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        // Invoke "debug painting" (press "p" in the console, choose the
+        // "Toggle Debug Paint" action from the Flutter Inspector in Android
+        // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+        // to see the wireframe for each widget.
+
+        children: <Widget>[
+          CurrentSignalText(
+            signal: signal,
+          ), // mostrem la conexió actual en un text
+          MainContent(
+            stage: stage,
+            startDataGiven: startDataGiven,
+            endDataGiven: endDataGiven,
+            updateState: updateMainMenu,
+            lineItems: lineItems,
+            startStationItems: startStationItems,
+            directionItems: directionItems,
+            selectedChoices: selectedChoices,
+          ),
+          StartStopButton(
+            stage: stage,
+            updateStage: updateStage,
+            startDataGiven: startDataGiven,
+            endDataGiven: endDataGiven,
+          ),
+        ],
       ),
     );
   }
