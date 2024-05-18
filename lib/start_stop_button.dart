@@ -4,19 +4,45 @@ import 'package:flutter/material.dart';
 
 // ignore: use_key_in_widget_constructors
 class StartStopButton extends StatelessWidget {
-  bool startPressed;
-  final Function() updateStart;
+  int stage;
+  List<bool> startDataGiven;
+  bool endDataGiven;
+  final Function(int) updateStage;
 
-  StartStopButton({required this.startPressed, required this.updateStart});
+  StartStopButton(
+      {required this.stage,
+      required this.updateStage,
+      required this.startDataGiven,
+      required this.endDataGiven});
 
   String changeButtonText() {
-    if (startPressed) return 'Stop recording';
-    return 'Start recording';
+    switch (stage) {
+      case 0:
+        return 'Start Recording';
+      case 1:
+        return 'Stop recording';
+      case 2:
+        return 'End recording';
+      default:
+        return 'An error has occured';
+    }
   }
 
   Color changeButtonColor() {
-    if (startPressed) return Colors.red.shade200;
-    return Colors.green;
+    if (startDataGiven[0] &&
+        startDataGiven[1] &&
+        startDataGiven[2] &&
+        stage == 0) {
+      return Colors.green; // Podem començar la simulació
+    } else if (stage == 0) {
+      return Colors.grey.shade300; // Falten emplenar camps
+    } else if (stage == 1) {
+      return Colors.red.shade300; // Podem acabar la recopilació
+    } else if (stage == 2 && endDataGiven) {
+      return Colors.green; // Podem finalitzar
+    } else {
+      return Colors.grey.shade300; // Falten emplenar camps
+    }
   }
 
   @override
@@ -33,7 +59,7 @@ class StartStopButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () {
               // Define the action to be taken when the button is pressed
-              updateStart();
+              updateStage(stage);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: changeButtonColor(),

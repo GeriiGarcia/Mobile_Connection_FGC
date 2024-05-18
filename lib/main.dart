@@ -49,35 +49,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _signal = '0';
-  bool startPressed = false;
+  // -------------------------------------------------- Variables
+  String signal = '0';
+  int stage = 0; // 0: Start, 1: Running, 2: end
+  List<bool> startDataGiven = [
+    false, // line
+    false, // origin
+    false // direction
+  ];
+  bool endDataGiven = false; // destination
 
-  // ------------------------------------ Funcions
+  // -------------------------------------------------- Funcions
   // ignore: non_constant_identifier_names
-  String _get_connectivity() {
+  String getConnectivity() {
     final random = Random();
 
     return random.nextInt(100).toString();
   }
 
-  void _StartRecording() {
-    setState(() {
-      startPressed = !startPressed;
-    });
+  void updateStage(int currentStage) {
+    bool canSetState = false;
+
+    if (startDataGiven[0] &&
+        startDataGiven[1] &&
+        startDataGiven[2] &&
+        stage == 0) {
+      canSetState = true; // Podem cambiar d'estat
+    } else if (endDataGiven && stage == 2) {
+      canSetState = true;
+    }
+
+    if (canSetState) {
+      setState(() {
+        if (currentStage == 2) {
+          // Aquí pot anar lo de enviar/finalitzar el fitxer
+          stage = 0;
+        } else {
+          stage++;
+        }
+      });
+    } else {
+      // Podriem mostrar un missatge en plan "has d'omplir els camps"
+    }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _signal = _get_connectivity();
-    });
-  }
-
-  // ------------------------------------ Override
+  // -------------------------------------------------- Override
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -101,11 +117,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
         children: <Widget>[
           CurrentSignalText(
-            signal: _signal,
+            signal: signal,
           ), // mostrem la conexió actual en un text
-          MainContent(),
+          MainContent(
+            stage: stage,
+            startDataGiven: startDataGiven,
+            endDataGiven: endDataGiven,
+          ),
           StartStopButton(
-              updateStart: _StartRecording, startPressed: startPressed),
+            stage: stage,
+            updateStage: updateStage,
+            startDataGiven: startDataGiven,
+            endDataGiven: endDataGiven,
+          ),
         ],
       ),
     );
