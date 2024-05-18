@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
       _wifiSpeed = wifiSpeed;
 
       String formattedDate =
-          DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
+          DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
       dataDecibels.add([formattedDate, _wifiSignal!]);
       writeData(dataDecibels);
     });
@@ -140,7 +140,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     String formattedDate =
-        DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
+        DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
     List<int> dataText = getLast15Elements(dataDecibels);
     return MaterialApp(
       home: Scaffold(
