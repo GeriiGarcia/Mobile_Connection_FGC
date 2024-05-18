@@ -1,4 +1,9 @@
+
 import 'package:flutter/foundation.dart';
+
+//import 'dart:js_util';
+// Dart packadges
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -11,6 +16,19 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'dart:convert';
 
+import 'dart:math';
+
+//My files
+import 'current_signal_text.dart';
+import 'start_stop_button.dart';
+import 'main_content.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
+
 void main() {
   runApp(const MyApp());
 }
@@ -19,10 +37,24 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'FGC_connectivity',
+      theme: ThemeData(
+        // This is the theme of your application.
+        primarySwatch: Colors.green,
+
+      ),
+      home: const MyHomePage(title: 'FGC connection app'),
+    );
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+
+class _MyHomePageState extends State<MyHomePage> {
+
+  // -------------------------------------------------- Variables
   int? _mobileSignal;
   int? _wifiSignal;
   int? _wifiSpeed;
@@ -30,8 +62,36 @@ class _MyAppState extends State<MyApp> {
   List<List<dynamic>> dataDecibels = [];
 
   final _internetSignal = FlutterInternetSignal();
-  Timer? _timer;
+  Timer? _timer; 
+  
+  
+  // FGC data
+  String _dataFromApi = 'Loading...';
+  String _location = 'Location: Loading...';
+  List<String> _uniqueRouteShortNames = [];
+  
+  // Controll variables
+  String signal = '0';
+  int stage = 0; // 0: Start, 1: Running, 2: end
+  List<bool> startDataGiven = [
+    false, // line
+    false, // origin
+    false // direction
+  ];
+  bool endDataGiven = false; // destination
 
+  // Start menu lists
+  List<String> lineItems = ['---', 'S1', 'S2'];
+  List<String> startStationItems = [
+    '---',
+    'Bellaterra',
+    'Universitat Autonoma'
+  ];
+  List<String> directionItems = ['---', 'Sabadell', 'Barcelona'];
+  List<String?> selectedChoices = ['---', '---', '---'];
+
+  // -------------------------------------------------- Funcions
+  // ---------------- Funcions connexio
   @override
   void initState() {
     super.initState();
@@ -50,7 +110,7 @@ class _MyAppState extends State<MyApp> {
       _getInternetSignal();
     });
   }
-
+  
   Future<void> _getPlatformVersion() async {
     try {
       _version = await _internetSignal.getPlatformVersion();
@@ -136,20 +196,136 @@ class _MyAppState extends State<MyApp> {
     // Extraer el segundo valor de cada sublista.
     return list.map((sublist) => sublist[1] as int).toList();
   }
+        
+  // -------------------------  Fi Funcions Connexio
+        
+  // ignore: non_constant_identifier_names
+  String getConnectivity() {
+    final random = Random();
+
+    return random.nextInt(100).toString();
+  }
+
+  void updateStage(int currentStage) {
+    bool canSetState = false;
+
+    if (startDataGiven[0] &&
+        startDataGiven[1] &&
+        startDataGiven[2] &&
+        stage == 0) {
+      canSetState = true; // Podem cambiar d'estat
+    } else if (endDataGiven && stage == 2) {
+      canSetState = true;
+    }
+
+    if (canSetState) {
+      setState(() {
+        if (currentStage == 2) {
+          // Aquí pot anar lo de enviar/finalitzar el fitxer
+          stage = 0;
+        } else {
+          stage++;
+        }
+      });
+    } else {
+      // Podriem mostrar un missatge en plan "has d'omplir els camps"
+    }
+  }
+
+  void updateMainMenu(String? line, String? station, String? destination) {
+    setState(() {
+      selectedChoices = [line, station, destination];
+    });
+  }
+
+  // -------------------------------------------------- Override
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<List<dynamic>> _loadData() async {
+    try {
+      final String scheduleRaw = await rootBundle.loadString('assets/data/schedule.json');
+      final List<dynamic> scheduleList = json.decode(scheduleRaw);
+      return scheduleList;
+    } catch (e) {
+      throw Exception('Error loading data');
+    }
+  }
+
+  List<String> _getLines(List<dynamic> scheduleList) {
+    final List<String> lines = scheduleList.map((item) => item['route_short_name'] as String).toList();
+    return lines.toList();
+  }
+
+  List<String> getStopNamesForRoute(String line, List<dynamic> scheduleList) {
+    final stops = scheduleList.where((item) => item['route_short_name'] == line)
+                              .map((item) => item['stop_name'] as String)
+                              .toList();
+    return stops;
+  }
+
+  List<String> getDestinations(String line, List<dynamic> scheduleList) {
+    final dest = scheduleList.where((item) => item['route_short_name'] == line)
+                              .map((item) => item['trip_headsign'] as String)
+                              .toList();
+    return dest;
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     String formattedDate =
         DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
     List<int> dataText = getLast15Elements(dataDecibels);
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Internet Signal Example'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
+      ),
+
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        // Invoke "debug painting" (press "p" in the console, choose the
+        // "Toggle Debug Paint" action from the Flutter Inspector in Android
+        // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+        // to see the wireframe for each widget.
+
+        children: <Widget>[
+          CurrentSignalText(
+            signal: signal,
+          ), // mostrem la conexió actual en un text
+          MainContent(
+            stage: stage,
+            startDataGiven: startDataGiven,
+            endDataGiven: endDataGiven,
+            updateState: updateMainMenu,
+            lineItems: lineItems,
+            startStationItems: startStationItems,
+            directionItems: directionItems,
+            selectedChoices: selectedChoices,
+          ),
+          StartStopButton(
+            stage: stage,
+            updateStage: updateStage,
+            startDataGiven: startDataGiven,
+            endDataGiven: endDataGiven,
+          ),
+        ],
+
+      ),
+    );
+  }
+}
+
+/*
             children: [
               Text('On Version: $_version \n'),
               Text('Mobile signal: ${_mobileSignal ?? '--'} [dBm]\n'),
@@ -157,14 +333,6 @@ class _MyAppState extends State<MyApp> {
               Text('Wifi speed: ${_wifiSpeed ?? '--'} Mbps\n'),
               Text('TIME: $formattedDate \n'),
               Text('VECTOR: $dataText \n'),
-              ElevatedButton(
-                onPressed: _getInternetSignal,
-                child: const Text('Get internet signal'),
-              )
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+
+ */
