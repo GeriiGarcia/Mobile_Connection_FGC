@@ -10,16 +10,34 @@ class MainContent extends StatelessWidget {
   int stage;
   List<bool> startDataGiven;
   bool endDataGiven;
+  final Function(String?, String?, String?) updateState;
+  List<String> lineItems;
+  List<String> startStationItems;
+  List<String> directionItems;
+  List<String?> selectedChoices;
 
-  MainContent(
-      {required this.stage,
-      required this.startDataGiven,
-      required this.endDataGiven});
+  MainContent({
+    required this.stage,
+    required this.startDataGiven,
+    required this.endDataGiven,
+    required this.updateState,
+    required this.lineItems,
+    required this.startStationItems,
+    required this.directionItems,
+    required this.selectedChoices,
+  });
 
   Widget getCurrentMenu(BuildContext context) {
     switch (stage) {
       case 0:
-        return StartMenu(startDataGiven: startDataGiven);
+        return StartMenu(
+          startDataGiven: startDataGiven,
+          updateState: updateState,
+          lineItems: lineItems,
+          startStationItems: startStationItems,
+          directionItems: directionItems,
+          selectedChoices: selectedChoices,
+        );
       case 1:
         return RunningMenu();
       case 2:

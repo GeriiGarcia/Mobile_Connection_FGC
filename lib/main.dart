@@ -50,6 +50,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // -------------------------------------------------- Variables
+  // Controll variables
   String signal = '0';
   int stage = 0; // 0: Start, 1: Running, 2: end
   List<bool> startDataGiven = [
@@ -58,6 +59,16 @@ class _MyHomePageState extends State<MyHomePage> {
     false // direction
   ];
   bool endDataGiven = false; // destination
+
+  // Start menu lists
+  List<String> lineItems = ['---', 'S1', 'S2'];
+  List<String> startStationItems = [
+    '---',
+    'Bellaterra',
+    'Universitat Autonoma'
+  ];
+  List<String> directionItems = ['---', 'Sabadell', 'Barcelona'];
+  List<String?> selectedChoices = ['---', '---', '---'];
 
   // -------------------------------------------------- Funcions
   // ignore: non_constant_identifier_names
@@ -93,6 +104,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  void updateMainMenu(String? line, String? station, String? destination) {
+    setState(() {
+      selectedChoices = [line, station, destination];
+    });
+  }
+
   // -------------------------------------------------- Override
   @override
   Widget build(BuildContext context) {
@@ -123,6 +140,11 @@ class _MyHomePageState extends State<MyHomePage> {
             stage: stage,
             startDataGiven: startDataGiven,
             endDataGiven: endDataGiven,
+            updateState: updateMainMenu,
+            lineItems: lineItems,
+            startStationItems: startStationItems,
+            directionItems: directionItems,
+            selectedChoices: selectedChoices,
           ),
           StartStopButton(
             stage: stage,
