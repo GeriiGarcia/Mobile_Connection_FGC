@@ -66,7 +66,6 @@ class _MyAppState extends State<MyApp> {
     return now;
   }
 
-
   DateTime nouFile = DateTime.now();
   String getTimeForFile() {
     String formattedDate = DateFormat('kk:mm:ss').format(nouFile);
@@ -129,10 +128,20 @@ class _MyAppState extends State<MyApp> {
     return file.writeAsString(jsonString);
   }
 
+  List<int> getLast15Elements(List<List<dynamic>> list) {
+      if (list.length > 15) {
+      list = list.sublist(list.length - 15);
+    }
+
+    // Extraer el segundo valor de cada sublista.
+    return list.map((sublist) => sublist[1] as int).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     String formattedDate =
         DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
+    List<int> dataText = getLast15Elements(dataDecibels);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -147,7 +156,7 @@ class _MyAppState extends State<MyApp> {
               Text('Wifi signal: ${_wifiSignal ?? '--'} [dBm]\n'),
               Text('Wifi speed: ${_wifiSpeed ?? '--'} Mbps\n'),
               Text('TIME: $formattedDate \n'),
-              Text('VECTOR: $dataDecibels \n'),
+              Text('VECTOR: $dataText \n'),
               ElevatedButton(
                 onPressed: _getInternetSignal,
                 child: const Text('Get internet signal'),
