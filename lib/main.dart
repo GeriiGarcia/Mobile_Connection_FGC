@@ -7,6 +7,10 @@ import 'package:flutter_internet_signal/flutter_internet_signal.dart';
 
 import 'package:intl/intl.dart';
 
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:convert'; 
+
 void main() {
   runApp(const MyApp());
 }
@@ -80,7 +84,29 @@ class _MyAppState extends State<MyApp> {
 
       String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
       dataDecibels.add([formattedDate, _wifiSignal!]);
+      writeData(dataDecibels);
     });
+  }
+
+  Future<String> get _localPath async {
+    final directory = await getApplicationDocumentsDirectory();
+
+    return directory.path;
+  }
+
+  Future<File> get _localFile async {
+    final path = await _localPath;
+    return File('$path/TIME_DECIBEL.txt');
+  }
+
+  Future<File> writeData(List<List<dynamic>> list) async {
+    final file = await _localFile;
+
+    // Convertir la lista a una cadena JSON
+    final jsonString = json.encode(list);
+
+    // Escribir la cadena JSON en el archivo
+    return file.writeAsString(jsonString);
   }
 
   @override
