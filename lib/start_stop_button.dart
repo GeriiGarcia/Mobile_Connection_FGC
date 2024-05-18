@@ -63,8 +63,8 @@ class StartStopButton extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: changeButtonColor(),
             ),
-            child:
-                Text(changeButtonText(), style: const TextStyle(fontSize: 15)),
+            child: Text(changeButtonText(),
+                style: const TextStyle(fontSize: 15, color: Colors.black87)),
           ),
         ),
       ),
