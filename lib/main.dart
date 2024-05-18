@@ -23,6 +23,9 @@ class _MyAppState extends State<MyApp> {
   int? _wifiSignal;
   int? _wifiSpeed;
   String? _version;
+  List<List<dynamic>> dataDecibels = [];
+  DateTime now = DateTime.now();
+  
 
   final _internetSignal = FlutterInternetSignal();
   Timer? _timer;
@@ -71,12 +74,14 @@ class _MyAppState extends State<MyApp> {
       _mobileSignal = mobile;
       _wifiSignal = wifi;
       _wifiSpeed = wifiSpeed;
+
+      String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
+      dataDecibels.add([formattedDate, _wifiSignal!]);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
     String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
     return MaterialApp(
       home: Scaffold(
@@ -92,6 +97,7 @@ class _MyAppState extends State<MyApp> {
               Text('Wifi signal: ${_wifiSignal ?? '--'} [dBm]\n'),
               Text('Wifi speed: ${_wifiSpeed ?? '--'} Mbps\n'),
               Text('TIME: $formattedDate \n'),
+              Text('VECTOR: $dataDecibels \n'),
               ElevatedButton(
                 onPressed: _getInternetSignal,
                 child: const Text('Get internet signal'),
