@@ -1,8 +1,12 @@
 //import 'dart:js_util';
-
+// Dart packadges
 import 'package:flutter/material.dart';
+import 'dart:math';
+
+//My files
 import 'current_signal_text.dart';
 import 'start_stop_button.dart';
+import 'main_content.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +49,22 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _signal = '0';
+  bool startPressed = false;
+
+  // ------------------------------------ Funcions
+  // ignore: non_constant_identifier_names
+  String _get_connectivity() {
+    final random = Random();
+
+    return random.nextInt(100).toString();
+  }
+
+  void _StartRecording() {
+    setState(() {
+      startPressed = !startPressed;
+    });
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -54,10 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _signal = _get_connectivity();
     });
   }
 
+  // ------------------------------------ Override
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -69,8 +89,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        toolbarHeight: MediaQuery.of(context).size.height * 0.10,
       ),
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -80,20 +100,14 @@ class _MyHomePageState extends State<MyHomePage> {
         // to see the wireframe for each widget.
 
         children: <Widget>[
-          CurrentSignalText(), // mostrem la conexió actual en un text
-          Text(
-            '$_counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          StartStopButton(),
+          CurrentSignalText(
+            signal: _signal,
+          ), // mostrem la conexió actual en un text
+          MainContent(),
+          StartStopButton(
+              updateStart: _StartRecording, startPressed: startPressed),
         ],
       ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
