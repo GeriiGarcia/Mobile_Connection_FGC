@@ -10,20 +10,24 @@ class MainContent extends StatelessWidget {
   int stage;
   List<bool> startDataGiven;
   bool endDataGiven;
-  final Function(String?, String?, String?) updateState;
+  final Function(String?, String?, String?, int) updateStartState;
+  final Function(String?) updateEndState;
   List<String> lineItems;
   List<String> startStationItems;
   List<String> directionItems;
   List<String?> selectedChoices;
+  String selectedEndChoice;
 
   MainContent({
     required this.stage,
     required this.startDataGiven,
     required this.endDataGiven,
-    required this.updateState,
+    required this.updateStartState,
+    required this.updateEndState,
     required this.lineItems,
     required this.startStationItems,
     required this.directionItems,
+    required this.selectedEndChoice,
     required this.selectedChoices,
   });
 
@@ -32,7 +36,7 @@ class MainContent extends StatelessWidget {
       case 0:
         return StartMenu(
           startDataGiven: startDataGiven,
-          updateState: updateState,
+          updateState: updateStartState,
           lineItems: lineItems,
           startStationItems: startStationItems,
           directionItems: directionItems,
@@ -43,6 +47,9 @@ class MainContent extends StatelessWidget {
       case 2:
         return EndMenu(
           endDataGiven: endDataGiven,
+          selectedEndChoice: selectedEndChoice,
+          startStationItems: startStationItems,
+          updateState: updateEndState,
         );
       default: // Error page
         return Container(

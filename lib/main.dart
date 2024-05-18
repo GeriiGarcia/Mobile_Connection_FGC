@@ -21,7 +21,6 @@ import 'main_content.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -63,6 +62,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // -------------------------------------------------- Variables
+  // Variables de connexió
   int? _mobileSignal;
   int? _wifiSignal;
   int? _wifiSpeed;
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // FGC data
   List<dynamic> scheduleList = [];
-  
+
   // Controll variables
   String signal = '0';
   int stage = 0; // 0: Start, 1: Running, 2: end
@@ -87,15 +87,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Start menu lists
 
-  List<String> lineItems = ['S1', 'S2'];
-  List<String> startStationItems = [
-    '---',
-    'Bellaterra',
-    'Universitat Autonoma'
-  ];
-  List<String> directionItems = ['---', 'Sabadell', 'Barcelona'];
+  List<String> lineItems = ['---'];
+  List<String> startStationItems = ['---'];
+  List<String> directionItems = ['---'];
   List<String?> sel_values = ['---', '---', '---'];
-
+  String selEndValue = '---';
   // -------------------------------------------------- Funcions
   // ---------------- Funcions connexio
 
@@ -194,7 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // -------------------------  Fi Funcions Connexio
 
   // ignore: non_constant_identifier_names
-  String getConnectivity() {
+  String getConnectivity(String) {
     final random = Random();
 
     return random.nextInt(100).toString();
@@ -208,6 +204,8 @@ class _MyHomePageState extends State<MyHomePage> {
         startDataGiven[2] &&
         stage == 0) {
       canSetState = true; // Podem cambiar d'estat
+    } else if (stage == 1) {
+      canSetState = true;
     } else if (endDataGiven && stage == 2) {
       canSetState = true;
     }
@@ -226,61 +224,86 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void updateMainMenu(String? line, String? station, String? destination) {
+  void updateStartState(
+      String? line, String? station, String? destination, int nou) {
+    if (nou == 0) {
+      startDataGiven[0] = true;
+      startDataGiven[1] = false;
+      startDataGiven[2] = false;
+      setState(() {
+        sel_values = [line!, '---', '---'];
+      });
+    } else if (nou == 1 && startDataGiven[0]) {
+      startDataGiven[1] = true;
+      startDataGiven[2] = false;
+      setState(() {
+        sel_values = [line!, station!, '---'];
+      });
+    } else if (nou == 2 && startDataGiven[0] && startDataGiven[1]) {
+      startDataGiven[2] = true;
+      setState(() {
+        sel_values = [line!, station!, destination!];
+      });
+    }
+  }
+
+  void updateEndState(String? endValue) {
+    endDataGiven = true;
     setState(() {
-      sel_values = [line!, station!, destination!];
+      selEndValue = endValue!;
+      sel_values = ['---', '---', '---'];
     });
   }
 
-  // -------------------------------------------------- Override
-
-  
-
- 
-
+  // ----------------------------------------------- FGC
   Future<void> _loadData() async {
     try {
-      final String scheduleRaw = await rootBundle.loadString('assets/data/schedule.json');
+      final String scheduleRaw =
+          await rootBundle.loadString('assets/data/schedule.json');
       scheduleList = json.decode(scheduleRaw);
     } catch (e) {
       throw Exception('Error loading data');
     }
   }
 
+  // Funcions que recopilen les dades de FGC
   List<String> getLines(List<dynamic> scheduleList) {
-    final List<String> lines = scheduleList.map((item) => item['route_short_name'] as String).toSet().toList();
+    final List<String> lines = scheduleList
+        .map((item) => item['route_short_name'] as String)
+        .toSet()
+        .toList();
     lines.insert(0, '---');
     return lines;
   }
 
   List<String> getStopNamesForRoute(String line, List<dynamic> scheduleList) {
-    final List<String> stops = scheduleList.where((item) => item['route_short_name'] == line)
-                              .map((item) => item['stop_name'] as String)
-                              .toSet()
-                              .toList();
+    final List<String> stops = scheduleList
+        .where((item) => item['route_short_name'] == line)
+        .map((item) => item['stop_name'] as String)
+        .toSet()
+        .toList();
     stops.insert(0, '---');
     return stops;
   }
 
   List<String> getDestinations(String line, List<dynamic> scheduleList) {
-    final List<String> dest = scheduleList.where((item) => item['route_short_name'] == line)
-                              .map((item) => item['trip_headsign'] as String)
-                              .toSet()
-                              .toList();
+    final List<String> dest = scheduleList
+        .where((item) => item['route_short_name'] == line)
+        .map((item) => item['trip_headsign'] as String)
+        .toSet()
+        .toList();
     dest.insert(0, '---');
     return dest;
   }
 
-  // --------------------------- overrides
-   late Future<void> _dataLoadingFuture;
-
+  // -------------------------------------------------- Overrides
+  late Future<void> _dataLoadingFuture;
   @override
   void initState() {
     super.initState();
     _getPlatformVersion();
     _startPeriodicUpdate();
-    _dataLoadingFuture =  _loadData();
-
+    _dataLoadingFuture = _loadData();
   }
 
   @override
@@ -295,10 +318,14 @@ class _MyHomePageState extends State<MyHomePage> {
     //List<int> dataText = getLast15Elements(dataDecibels);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: const TextStyle(
+              fontSize: 30, color: Colors.white70, fontWeight: FontWeight.bold),
+        ),
         toolbarHeight: MediaQuery.of(context).size.height * 0.10,
+        backgroundColor: Colors.green,
       ),
-
       body: FutureBuilder<void>(
         future: _dataLoadingFuture,
         builder: (context, snapshot) {
@@ -319,16 +346,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 CurrentSignalText(
                   signal: signal,
                 ), // mostrem la conexió actual en un text
-              
+
                 MainContent(
                   stage: stage,
                   startDataGiven: startDataGiven,
                   endDataGiven: endDataGiven,
-                  updateState: updateMainMenu,
+                  updateStartState: updateStartState,
+                  updateEndState: updateEndState,
                   lineItems: getLines(scheduleList),
-                  startStationItems: getStopNamesForRoute(sel_values[0]!, scheduleList),
+                  startStationItems:
+                      getStopNamesForRoute(sel_values[0]!, scheduleList),
                   directionItems: getDestinations(sel_values[0]!, scheduleList),
                   selectedChoices: sel_values,
+                  selectedEndChoice: selEndValue,
                 ),
                 StartStopButton(
                   stage: stage,
