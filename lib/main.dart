@@ -1,9 +1,4 @@
-
 import 'package:flutter/foundation.dart';
-
-//import 'dart:js_util';
-// Dart packadges
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -23,17 +18,15 @@ import 'current_signal_text.dart';
 import 'start_stop_button.dart';
 import 'main_content.dart';
 
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:geolocator/geolocator.dart';
-import 'package:flutter/services.dart' show rootBundle;
-
+//import 'package:http/http.dart' as http;
+//import 'dart:convert';
+//import 'package:flutter/services.dart' show rootBundle;
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
@@ -44,16 +37,31 @@ class MyApp extends StatefulWidget {
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.green,
-
       ),
       home: const MyHomePage(title: 'FGC connection app'),
     );
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
 
 class _MyHomePageState extends State<MyHomePage> {
-
   // -------------------------------------------------- Variables
   int? _mobileSignal;
   int? _wifiSignal;
@@ -62,14 +70,10 @@ class _MyHomePageState extends State<MyHomePage> {
   List<List<dynamic>> dataDecibels = [];
 
   final _internetSignal = FlutterInternetSignal();
-  Timer? _timer; 
-  
-  
+  Timer? _timer;
+
   // FGC data
-  String _dataFromApi = 'Loading...';
-  String _location = 'Location: Loading...';
-  List<String> _uniqueRouteShortNames = [];
-  
+
   // Controll variables
   String signal = '0';
   int stage = 0; // 0: Start, 1: Running, 2: end
@@ -92,25 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // -------------------------------------------------- Funcions
   // ---------------- Funcions connexio
-  @override
-  void initState() {
-    super.initState();
-    _getPlatformVersion();
-    _startPeriodicUpdate();
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
 
   void _startPeriodicUpdate() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _getInternetSignal();
     });
   }
-  
+
   Future<void> _getPlatformVersion() async {
     try {
       _version = await _internetSignal.getPlatformVersion();
@@ -189,16 +181,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<int> getLast15Elements(List<List<dynamic>> list) {
-      if (list.length > 15) {
+    if (list.length > 15) {
       list = list.sublist(list.length - 15);
     }
 
     // Extraer el segundo valor de cada sublista.
     return list.map((sublist) => sublist[1] as int).toList();
   }
-        
+
   // -------------------------  Fi Funcions Connexio
-        
+
   // ignore: non_constant_identifier_names
   String getConnectivity() {
     final random = Random();
@@ -240,17 +232,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // -------------------------------------------------- Override
 
-  
-
-  @override
-  void initState() {
-    super.initState();
-    _loadData();
-  }
-
   Future<List<dynamic>> _loadData() async {
     try {
-      final String scheduleRaw = await rootBundle.loadString('assets/data/schedule.json');
+      final String scheduleRaw =
+          await rootBundle.loadString('assets/data/schedule.json');
       final List<dynamic> scheduleList = json.decode(scheduleRaw);
       return scheduleList;
     } catch (e) {
@@ -259,37 +244,51 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<String> _getLines(List<dynamic> scheduleList) {
-    final List<String> lines = scheduleList.map((item) => item['route_short_name'] as String).toList();
+    final List<String> lines =
+        scheduleList.map((item) => item['route_short_name'] as String).toList();
     return lines.toList();
   }
 
   List<String> getStopNamesForRoute(String line, List<dynamic> scheduleList) {
-    final stops = scheduleList.where((item) => item['route_short_name'] == line)
-                              .map((item) => item['stop_name'] as String)
-                              .toList();
+    final stops = scheduleList
+        .where((item) => item['route_short_name'] == line)
+        .map((item) => item['stop_name'] as String)
+        .toList();
     return stops;
   }
 
   List<String> getDestinations(String line, List<dynamic> scheduleList) {
-    final dest = scheduleList.where((item) => item['route_short_name'] == line)
-                              .map((item) => item['trip_headsign'] as String)
-                              .toList();
+    final dest = scheduleList
+        .where((item) => item['route_short_name'] == line)
+        .map((item) => item['trip_headsign'] as String)
+        .toList();
     return dest;
   }
 
+  // --------------------------- overrides
+  @override
+  void initState() {
+    super.initState();
+    _getPlatformVersion();
+    _startPeriodicUpdate();
+    _loadData();
+  }
 
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate =
-        DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
-    List<int> dataText = getLast15Elements(dataDecibels);
+    //String formattedDate = DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
+    //List<int> dataText = getLast15Elements(dataDecibels);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         toolbarHeight: MediaQuery.of(context).size.height * 0.10,
       ),
-
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
 
@@ -319,7 +318,6 @@ class _MyHomePageState extends State<MyHomePage> {
             endDataGiven: endDataGiven,
           ),
         ],
-
       ),
     );
   }
