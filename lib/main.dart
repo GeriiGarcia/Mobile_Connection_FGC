@@ -9,9 +9,7 @@ import 'current_signal_text.dart';
 import 'start_stop_button.dart';
 import 'main_content.dart';
 
-import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 
@@ -60,9 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // -------------------------------------------------- Variables
   // FGC data
-  String _dataFromApi = 'Loading...';
-  String _location = 'Location: Loading...';
-  List<String> _uniqueRouteShortNames = [];
+  List<dynamic> scheduleList = [];
   
   // Controll variables
   String signal = '0';
@@ -75,14 +71,15 @@ class _MyHomePageState extends State<MyHomePage> {
   bool endDataGiven = false; // destination
 
   // Start menu lists
-  List<String> lineItems = ['---', 'S1', 'S2'];
+
+  List<String> lineItems = ['S1', 'S2'];
   List<String> startStationItems = [
     '---',
     'Bellaterra',
     'Universitat Autonoma'
   ];
   List<String> directionItems = ['---', 'Sabadell', 'Barcelona'];
-  List<String?> selectedChoices = ['---', '---', '---'];
+  List<String?> sel_values = ['---', '---', '---'];
 
   // -------------------------------------------------- Funcions
   // ignore: non_constant_identifier_names
@@ -120,46 +117,50 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void updateMainMenu(String? line, String? station, String? destination) {
     setState(() {
-      selectedChoices = [line, station, destination];
+      sel_values = [line!, station!, destination!];
     });
   }
 
   // -------------------------------------------------- Override
 
-  
+  late Future<void> _dataLoadingFuture;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _dataLoadingFuture = _loadData();
   }
 
-  Future<List<dynamic>> _loadData() async {
+  Future<void> _loadData() async {
     try {
       final String scheduleRaw = await rootBundle.loadString('assets/data/schedule.json');
-      final List<dynamic> scheduleList = json.decode(scheduleRaw);
-      return scheduleList;
+      scheduleList = json.decode(scheduleRaw);
     } catch (e) {
       throw Exception('Error loading data');
     }
   }
 
-  List<String> _getLines(List<dynamic> scheduleList) {
-    final List<String> lines = scheduleList.map((item) => item['route_short_name'] as String).toList();
-    return lines.toList();
+  List<String> getLines(List<dynamic> scheduleList) {
+    final List<String> lines = scheduleList.map((item) => item['route_short_name'] as String).toSet().toList();
+    lines.insert(0, '---');
+    return lines;
   }
 
   List<String> getStopNamesForRoute(String line, List<dynamic> scheduleList) {
-    final stops = scheduleList.where((item) => item['route_short_name'] == line)
+    final List<String> stops = scheduleList.where((item) => item['route_short_name'] == line)
                               .map((item) => item['stop_name'] as String)
+                              .toSet()
                               .toList();
+    stops.insert(0, '---');
     return stops;
   }
 
   List<String> getDestinations(String line, List<dynamic> scheduleList) {
-    final dest = scheduleList.where((item) => item['route_short_name'] == line)
+    final List<String> dest = scheduleList.where((item) => item['route_short_name'] == line)
                               .map((item) => item['trip_headsign'] as String)
+                              .toSet()
                               .toList();
+    dest.insert(0, '---');
     return dest;
   }
 
@@ -173,35 +174,47 @@ class _MyHomePageState extends State<MyHomePage> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.10,
       ),
 
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: FutureBuilder<void>(
+        future: _dataLoadingFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
 
-        // Invoke "debug painting" (press "p" in the console, choose the
-        // "Toggle Debug Paint" action from the Flutter Inspector in Android
-        // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-        // to see the wireframe for each widget.
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
 
-        children: <Widget>[
-          CurrentSignalText(
-            signal: signal,
-          ), // mostrem la conexió actual en un text
-          MainContent(
-            stage: stage,
-            startDataGiven: startDataGiven,
-            endDataGiven: endDataGiven,
-            updateState: updateMainMenu,
-            lineItems: lineItems,
-            startStationItems: startStationItems,
-            directionItems: directionItems,
-            selectedChoices: selectedChoices,
-          ),
-          StartStopButton(
-            stage: stage,
-            updateStage: updateStage,
-            startDataGiven: startDataGiven,
-            endDataGiven: endDataGiven,
-          ),
-        ],
+              children: <Widget>[
+                CurrentSignalText(
+                  signal: signal,
+                ), // mostrem la conexió actual en un text
+              
+                MainContent(
+                  stage: stage,
+                  startDataGiven: startDataGiven,
+                  endDataGiven: endDataGiven,
+                  updateState: updateMainMenu,
+                  lineItems: getLines(scheduleList),
+                  startStationItems: getStopNamesForRoute(sel_values[0]!, scheduleList),
+                  directionItems: getDestinations(sel_values[0]!, scheduleList),
+                  selectedChoices: sel_values,
+                ),
+                StartStopButton(
+                  stage: stage,
+                  updateStage: updateStage,
+                  startDataGiven: startDataGiven,
+                  endDataGiven: endDataGiven,
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
