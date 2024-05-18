@@ -22,7 +22,7 @@ class StartMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.65,
+      height: MediaQuery.of(context).size.height * 0.60,
       color: Colors.blue,
       child: Center(
           child: Column(
