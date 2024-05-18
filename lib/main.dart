@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_internet_signal/flutter_internet_signal.dart';
 
+import 'package:intl/intl.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -74,6 +76,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(now);
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
@@ -87,6 +91,7 @@ class _MyAppState extends State<MyApp> {
               Text('Mobile signal: ${_mobileSignal ?? '--'} [dBm]\n'),
               Text('Wifi signal: ${_wifiSignal ?? '--'} [dBm]\n'),
               Text('Wifi speed: ${_wifiSpeed ?? '--'} Mbps\n'),
+              Text('TIME: $formattedDate \n'),
               ElevatedButton(
                 onPressed: _getInternetSignal,
                 child: const Text('Get internet signal'),
