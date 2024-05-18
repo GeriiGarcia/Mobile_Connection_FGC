@@ -23,11 +23,25 @@ class _MyAppState extends State<MyApp> {
   String? _version;
 
   final _internetSignal = FlutterInternetSignal();
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _getPlatformVersion();
+    _startPeriodicUpdate();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  void _startPeriodicUpdate() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _getInternetSignal();
+    });
   }
 
   Future<void> _getPlatformVersion() async {
