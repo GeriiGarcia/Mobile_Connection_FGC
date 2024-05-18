@@ -1,113 +1,85 @@
-import 'dart:async';
-import 'dart:developer' as developer;
-
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:flutter/services.dart';
+import 'package:flutter_internet_signal/flutter_internet_signal.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0x9f4376f8),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  ConnectivityResult _connectionStatus = ConnectivityResult.none;
-  final Connectivity _connectivity = Connectivity();
-  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+class _MyAppState extends State<MyApp> {
+  int? _mobileSignal;
+  int? _wifiSignal;
+  int? _wifiSpeed;
+  String? _version;
+
+  final _internetSignal = FlutterInternetSignal();
 
   @override
   void initState() {
     super.initState();
-    initConnectivity();
-
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _getPlatformVersion();
   }
 
-  @override
-  void dispose() {
-    _connectivitySubscription.cancel();
-    super.dispose();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initConnectivity() async {
-    late ConnectivityResult result;
-    // Platform messages may fail, so we use a try/catch PlatformException.
+  Future<void> _getPlatformVersion() async {
     try {
-      result = await _connectivity.checkConnectivity();
-    } on PlatformException catch (e) {
-      developer.log('Couldn\'t check connectivity status', error: e);
-      return;
+      _version = await _internetSignal.getPlatformVersion();
+    } on PlatformException {
+      if (kDebugMode) print('Error get Android version.');
+      _version = null;
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) {
-      return Future.value(null);
-    }
-
-    return _updateConnectionStatus(result);
+    setState(() {});
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
+  Future<void> _getInternetSignal() async {
+    int? mobile;
+    int? wifi;
+    int? wifiSpeed;
+    try {
+      mobile = await _internetSignal.getMobileSignalStrength();
+      wifi = await _internetSignal.getWifiSignalStrength();
+      wifiSpeed = await _internetSignal.getWifiLinkSpeed();
+    } on PlatformException {
+      if (kDebugMode) print('Error get internet signal.');
+    }
     setState(() {
-      _connectionStatus = result;
+      _mobileSignal = mobile;
+      _wifiSignal = wifi;
+      _wifiSpeed = wifiSpeed;
     });
-    // ignore: avoid_print
-    print('Connectivity changed: $_connectionStatus');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Connectivity Plus Example'),
-        elevation: 4,
-      ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Spacer(flex: 2),
-          Text(
-            'Active connection type:',
-            style: Theme.of(context).textTheme.headlineMedium,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Internet Signal Example'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('On Version: $_version \n'),
+              Text('Mobile signal: ${_mobileSignal ?? '--'} [dBm]\n'),
+              Text('Wifi signal: ${_wifiSignal ?? '--'} [dBm]\n'),
+              Text('Wifi speed: ${_wifiSpeed ?? '--'} Mbps\n'),
+              ElevatedButton(
+                onPressed: _getInternetSignal,
+                child: const Text('Get internet signal'),
+              )
+            ],
           ),
-          const Spacer(),
-          Center(
-            child: Text(
-              _connectionStatus.toString(),
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
-          const Spacer(flex: 2),
-        ],
+        ),
       ),
     );
   }
