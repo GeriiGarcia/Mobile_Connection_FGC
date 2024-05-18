@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'dart:convert'; 
+import 'dart:convert';
 
 void main() {
   runApp(const MyApp());
@@ -66,6 +66,13 @@ class _MyAppState extends State<MyApp> {
     return now;
   }
 
+
+  DateTime nouFile = DateTime.now();
+  String getTimeForFile() {
+    String formattedDate = DateFormat('kk:mm:ss').format(nouFile);
+    return formattedDate;
+  }
+
   Future<void> _getInternetSignal() async {
     int? mobile;
     int? wifi;
@@ -82,7 +89,8 @@ class _MyAppState extends State<MyApp> {
       _wifiSignal = wifi;
       _wifiSpeed = wifiSpeed;
 
-      String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
+      String formattedDate =
+          DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
       dataDecibels.add([formattedDate, _wifiSignal!]);
       writeData(dataDecibels);
     });
@@ -96,14 +104,26 @@ class _MyAppState extends State<MyApp> {
 
   Future<File> get _localFile async {
     final path = await _localPath;
-    return File('$path/TIME_DECIBEL.txt');
+    String archivo = getTimeForFile();
+    return File('$path/$archivo.txt');
   }
 
   Future<File> writeData(List<List<dynamic>> list) async {
+    // Convertir la lista de listas a una lista de mapas
     final file = await _localFile;
 
     // Convertir la lista a una cadena JSON
-    final jsonString = json.encode(list);
+    //final jsonString = json.encode(list);
+
+    List<Map<String, dynamic>> listAsMap = list.map((sublist) {
+      return {
+        "string": sublist[0],
+        "int": sublist[1],
+      };
+    }).toList();
+
+    // Convertir la lista de mapas a una cadena JSON
+    String jsonString = jsonEncode(listAsMap);
 
     // Escribir la cadena JSON en el archivo
     return file.writeAsString(jsonString);
@@ -111,7 +131,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
+    String formattedDate =
+        DateFormat('kk:mm:ss \n EEE d MMM').format(getTime());
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
