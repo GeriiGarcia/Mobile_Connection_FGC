@@ -1,0 +1,882 @@
+[
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 1,
+        "estacio": 1,
+        "inicials": "PC",
+        "nom_estacio": "Pl. Catalunya"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 6,
+        "estacio": 6,
+        "inicials": "BN",
+        "nom_estacio": "La Bonanova"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 9,
+        "estacio": 9,
+        "inicials": "RE",
+        "nom_estacio": "Reina Elisenda"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 10,
+        "estacio": 10,
+        "inicials": "PM",
+        "nom_estacio": "Pla\u00e7a Molina"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 21,
+        "estacio": 14,
+        "inicials": "PF",
+        "nom_estacio": "Peu del Funicular"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 37,
+        "estacio": 43,
+        "inicials": "EN",
+        "nom_estacio": "Terrassa  Estaci\u00f3 del nord"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 42,
+        "estacio": 29,
+        "inicials": "BT",
+        "nom_estacio": "Bellaterra"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 2,
+        "estacio": 2,
+        "inicials": "PR",
+        "nom_estacio": "Proven\u00e7a"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 46,
+        "estacio": 34,
+        "inicials": "CF",
+        "nom_estacio": "Can Feu | Gr\u00e0cia"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 4,
+        "estacio": 4,
+        "inicials": "SG",
+        "nom_estacio": "Sant Gervasi"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 47,
+        "estacio": 33,
+        "inicials": "RA",
+        "nom_estacio": "Sabadell Rambla"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 5,
+        "estacio": 5,
+        "inicials": "MN",
+        "nom_estacio": "Muntaner"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 50,
+        "estacio": 37,
+        "inicials": "NO",
+        "nom_estacio": "Sabadell Nord"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 7,
+        "estacio": 7,
+        "inicials": "TT",
+        "nom_estacio": "Les Tres Torres"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 5,
+        "estacio": 51,
+        "inicials": "GO",
+        "nom_estacio": "Gornal"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 23,
+        "estacio": 16,
+        "inicials": "VL",
+        "nom_estacio": "Baixador de Vallvidrera"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 21,
+        "estacio": 63,
+        "inicials": "ML",
+        "nom_estacio": "Mol\u00ed Nou Ciutat Cooperativa"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 25,
+        "estacio": 18,
+        "inicials": "LF",
+        "nom_estacio": "La Floresta"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 25,
+        "estacio": 66,
+        "inicials": "CR",
+        "nom_estacio": "Can Ros"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 27,
+        "estacio": 20,
+        "inicials": "SC",
+        "nom_estacio": "Sant Cugat"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 27,
+        "estacio": 68,
+        "inicials": "PA",
+        "nom_estacio": "Pallej\u00e0"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 31,
+        "estacio": 21,
+        "inicials": "MS",
+        "nom_estacio": "Mira-Sol"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 29,
+        "estacio": 70,
+        "inicials": "PL",
+        "nom_estacio": "El Palau"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 33,
+        "estacio": 23,
+        "inicials": "RB",
+        "nom_estacio": "Rub\u00ed"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 32,
+        "estacio": 72,
+        "inicials": "ME",
+        "nom_estacio": "Martorell Enlla\u00e7"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 34,
+        "estacio": 24,
+        "inicials": "FN",
+        "nom_estacio": "Les Fonts"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 43,
+        "estacio": 77,
+        "inicials": "CB",
+        "nom_estacio": "Castellbell i El Vilar"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 38,
+        "estacio": 44,
+        "inicials": "NA",
+        "nom_estacio": "Terrassa Nacions Unides"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 45,
+        "estacio": 79,
+        "inicials": "VI",
+        "nom_estacio": "Manresa Viladordis"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 41,
+        "estacio": 28,
+        "inicials": "SJ",
+        "nom_estacio": "Sant Joan"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 46,
+        "estacio": 80,
+        "inicials": "MA",
+        "nom_estacio": "Manresa Alta"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 44,
+        "estacio": 31,
+        "inicials": "SQ",
+        "nom_estacio": "Sant Quirze"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 52,
+        "estacio": 83,
+        "inicials": "BE",
+        "nom_estacio": "La Beguda"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 48,
+        "estacio": 35,
+        "inicials": "PJ",
+        "nom_estacio": "Sabadell Pl. Major"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 53,
+        "estacio": 84,
+        "inicials": "CP",
+        "nom_estacio": "Can Parellada"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 49,
+        "estacio": 36,
+        "inicials": "CT",
+        "nom_estacio": "Creu Alta"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 55,
+        "estacio": 86,
+        "inicials": "PI",
+        "nom_estacio": "Piera"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 1,
+        "estacio": 48,
+        "inicials": "PE",
+        "nom_estacio": "Pl. Espanya"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 58,
+        "estacio": 89,
+        "inicials": "PO",
+        "nom_estacio": "La Pobla de Claramunt"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 2,
+        "estacio": 49,
+        "inicials": "MG",
+        "nom_estacio": "Mag\u00f2ria La Campana"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 60,
+        "estacio": 91,
+        "inicials": "IG",
+        "nom_estacio": "Igualada"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 6,
+        "estacio": 52,
+        "inicials": "SP",
+        "nom_estacio": "Sant Josep"
+    },
+    {
+        "linia": 3,
+        "nom_linia": "Funicular de Gelida",
+        "ordre": 2,
+        "estacio": 61,
+        "inicials": "GS",
+        "nom_estacio": "Gelida Superior"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 7,
+        "estacio": 53,
+        "inicials": "LH",
+        "nom_estacio": "L'Hospitalet Av.Carrilet"
+    },
+    {
+        "linia": 5,
+        "nom_linia": "Funiculars Montserrat",
+        "ordre": 1,
+        "estacio": 95,
+        "inicials": "JI",
+        "nom_estacio": "Sant Joan Inferior"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 10,
+        "estacio": 56,
+        "inicials": "BO",
+        "nom_estacio": "Sant Boi"
+    },
+    {
+        "linia": 8,
+        "nom_linia": "Cremallera Montserrat",
+        "ordre": 2,
+        "estacio": 93,
+        "inicials": "MP",
+        "nom_estacio": "Monistrol Vila"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 23,
+        "estacio": 64,
+        "inicials": "CL",
+        "nom_estacio": "Santa Coloma de Cervell\u00f3"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 8,
+        "estacio": 8,
+        "inicials": "SM",
+        "nom_estacio": "Sant Lloren\u00e7 de Montgai"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 24,
+        "estacio": 65,
+        "inicials": "VH",
+        "nom_estacio": "Sant Vicen\u00e7 dels Horts"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 12,
+        "estacio": 12,
+        "inicials": "LL",
+        "nom_estacio": "Cellers-Llimiana"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 31,
+        "estacio": 58,
+        "inicials": "MC",
+        "nom_estacio": "Martorell Central"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 14,
+        "estacio": 14,
+        "inicials": "PT",
+        "nom_estacio": "Palau Noguera - Talarn"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 34,
+        "estacio": 74,
+        "inicials": "OL",
+        "nom_estacio": "Olesa de Montserrat"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 42,
+        "estacio": 76,
+        "inicials": "MO",
+        "nom_estacio": "Monistrol de Montserrat"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 54,
+        "estacio": 85,
+        "inicials": "MQ",
+        "nom_estacio": "Masquefa"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 56,
+        "estacio": 87,
+        "inicials": "VA",
+        "nom_estacio": "Vallbona d'Anoia"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 57,
+        "estacio": 88,
+        "inicials": "CA",
+        "nom_estacio": "Capellades"
+    },
+    {
+        "linia": 5,
+        "nom_linia": "Funiculars Montserrat",
+        "ordre": 2,
+        "estacio": 96,
+        "inicials": "JS",
+        "nom_estacio": "Sant Joan Superior"
+    },
+    {
+        "linia": 5,
+        "nom_linia": "Funiculars Montserrat",
+        "ordre": 3,
+        "estacio": 94,
+        "inicials": "M4",
+        "nom_estacio": "Montserrat vdes Funic."
+    },
+    {
+        "linia": 5,
+        "nom_linia": "Funiculars Montserrat",
+        "ordre": 3,
+        "estacio": 97,
+        "inicials": "CS",
+        "nom_estacio": "Santa Cova Superior"
+    },
+    {
+        "linia": 5,
+        "nom_linia": "Funiculars Montserrat",
+        "ordre": 4,
+        "estacio": 98,
+        "inicials": "CI",
+        "nom_estacio": "Santa Cova Inferior"
+    },
+    {
+        "linia": 7,
+        "nom_linia": "Tren del Ciment",
+        "ordre": 1,
+        "estacio": 51,
+        "inicials": "Y7",
+        "nom_estacio": "La Pobla de Lillet"
+    },
+    {
+        "linia": 8,
+        "nom_linia": "Cremallera Montserrat",
+        "ordre": 3,
+        "estacio": 94,
+        "inicials": "MM",
+        "nom_estacio": "Montserrat"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 1,
+        "estacio": 1,
+        "inicials": "LE",
+        "nom_estacio": "Lleida - Pirineus"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 2,
+        "estacio": 2,
+        "inicials": "AT",
+        "nom_estacio": "Alcoletge"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 6,
+        "estacio": 6,
+        "inicials": "BG",
+        "nom_estacio": "Balaguer"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 10,
+        "estacio": 10,
+        "inicials": "SN",
+        "nom_estacio": "Santa Linya"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 11,
+        "estacio": 11,
+        "inicials": "AR",
+        "nom_estacio": "\u00c0ger"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 15,
+        "estacio": 15,
+        "inicials": "TP",
+        "nom_estacio": "Tremp"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 16,
+        "estacio": 16,
+        "inicials": "SD",
+        "nom_estacio": "Sal\u00e0s de Pallars"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 3,
+        "estacio": 3,
+        "inicials": "GR",
+        "nom_estacio": "Gr\u00e0cia"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 8,
+        "estacio": 8,
+        "inicials": "SR",
+        "nom_estacio": "Sarri\u00e0"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 11,
+        "estacio": 11,
+        "inicials": "PD",
+        "nom_estacio": "P\u00e0dua"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 12,
+        "estacio": 12,
+        "inicials": "EP",
+        "nom_estacio": "El Putxet"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 13,
+        "estacio": 13,
+        "inicials": "TB",
+        "nom_estacio": "Av.Tibidabo"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 22,
+        "estacio": 15,
+        "inicials": "VS",
+        "nom_estacio": "Vallvidrera Superior"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 24,
+        "estacio": 17,
+        "inicials": "LP",
+        "nom_estacio": "Les Planes"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 26,
+        "estacio": 19,
+        "inicials": "VD",
+        "nom_estacio": "Valldoreix"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 32,
+        "estacio": 22,
+        "inicials": "HG",
+        "nom_estacio": "Hospital General"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 35,
+        "estacio": 25,
+        "inicials": "TR",
+        "nom_estacio": "Terrassa Rambla"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 36,
+        "estacio": 42,
+        "inicials": "VP",
+        "nom_estacio": "Vallparad\u00eds Universitat"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 40,
+        "estacio": 27,
+        "inicials": "VO",
+        "nom_estacio": "Volpelleres"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 43,
+        "estacio": 30,
+        "inicials": "UN",
+        "nom_estacio": "Universitat Aut\u00f2noma"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 45,
+        "estacio": 32,
+        "inicials": "SB",
+        "nom_estacio": "Sabadell Estaci\u00f3"
+    },
+    {
+        "linia": 1,
+        "nom_linia": "Barcelona-Vall\u00e8s",
+        "ordre": 51,
+        "estacio": 38,
+        "inicials": "PN",
+        "nom_estacio": "Sabadell Parc Nord"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 3,
+        "estacio": 50,
+        "inicials": "IC",
+        "nom_estacio": "Ildefons Cerd\u00e0"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 4,
+        "estacio": 57,
+        "inicials": "EU",
+        "nom_estacio": "Europa | Fira"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 8,
+        "estacio": 54,
+        "inicials": "AL",
+        "nom_estacio": "Almeda"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 9,
+        "estacio": 55,
+        "inicials": "CO",
+        "nom_estacio": "Cornell\u00e0 Riera"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 22,
+        "estacio": 62,
+        "inicials": "CG",
+        "nom_estacio": "Col\u00f2nia G\u00fcell"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 26,
+        "estacio": 67,
+        "inicials": "QC",
+        "nom_estacio": "Quatre Camins"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 28,
+        "estacio": 69,
+        "inicials": "SA",
+        "nom_estacio": "Sant Andreu de la Barca"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 30,
+        "estacio": 71,
+        "inicials": "MV",
+        "nom_estacio": "Martorell Vila | Castellbisbal"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 33,
+        "estacio": 73,
+        "inicials": "AB",
+        "nom_estacio": "Abrera"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 41,
+        "estacio": 75,
+        "inicials": "AE",
+        "nom_estacio": "Aeri de Montserrat"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 44,
+        "estacio": 78,
+        "inicials": "SV",
+        "nom_estacio": "Sant Vicen\u00e7 | Castellgal\u00ed"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 47,
+        "estacio": 81,
+        "inicials": "MB",
+        "nom_estacio": "Manresa Baixador"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 51,
+        "estacio": 82,
+        "inicials": "SE",
+        "nom_estacio": "Sant Esteve Sesrovires"
+    },
+    {
+        "linia": 2,
+        "nom_linia": "Llobregat-Anoia",
+        "ordre": 59,
+        "estacio": 90,
+        "inicials": "VN",
+        "nom_estacio": "Vilanova del Cam\u00ed"
+    },
+    {
+        "linia": 3,
+        "nom_linia": "Funicular de Gelida",
+        "ordre": 1,
+        "estacio": 59,
+        "inicials": "GI",
+        "nom_estacio": "Gelida Inferior"
+    },
+    {
+        "linia": 7,
+        "nom_linia": "Tren del Ciment",
+        "ordre": 2,
+        "estacio": 52,
+        "inicials": "Y8",
+        "nom_estacio": "Castellar de n'Hug"
+    },
+    {
+        "linia": 8,
+        "nom_linia": "Cremallera Montserrat",
+        "ordre": 1,
+        "estacio": 76,
+        "inicials": "MT",
+        "nom_estacio": "Monistrol de Montserrat"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 3,
+        "estacio": 3,
+        "inicials": "VB",
+        "nom_estacio": "Vilanova de la Barca"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 4,
+        "estacio": 4,
+        "inicials": "RM",
+        "nom_estacio": "T\u00e9rmens"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 5,
+        "estacio": 5,
+        "inicials": "VF",
+        "nom_estacio": "Vallfogona de Balaguer"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 7,
+        "estacio": 7,
+        "inicials": "GB",
+        "nom_estacio": "Gerb"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 9,
+        "estacio": 9,
+        "inicials": "LS",
+        "nom_estacio": "Vilanova de la Sal"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 13,
+        "estacio": 13,
+        "inicials": "GT",
+        "nom_estacio": "Guardia de Tremp"
+    },
+    {
+        "linia": 9,
+        "nom_linia": "Lleida - La Pobla",
+        "ordre": 17,
+        "estacio": 17,
+        "inicials": "PS",
+        "nom_estacio": "La Pobla de Segur"
+    }
+]

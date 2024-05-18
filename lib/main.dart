@@ -1,12 +1,19 @@
 //import 'dart:js_util';
 // Dart packadges
 import 'package:flutter/material.dart';
+
 import 'dart:math';
 
 //My files
 import 'current_signal_text.dart';
 import 'start_stop_button.dart';
 import 'main_content.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter/services.dart' show rootBundle;
+
 
 void main() {
   runApp(const MyApp());
@@ -24,6 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         // This is the theme of your application.
         primarySwatch: Colors.green,
+
       ),
       home: const MyHomePage(title: 'FGC connection app'),
     );
@@ -49,7 +57,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   // -------------------------------------------------- Variables
+  // FGC data
+  String _dataFromApi = 'Loading...';
+  String _location = 'Location: Loading...';
+  List<String> _uniqueRouteShortNames = [];
+  
   // Controll variables
   String signal = '0';
   int stage = 0; // 0: Start, 1: Running, 2: end
@@ -111,19 +125,54 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // -------------------------------------------------- Override
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<List<dynamic>> _loadData() async {
+    try {
+      final String scheduleRaw = await rootBundle.loadString('assets/data/schedule.json');
+      final List<dynamic> scheduleList = json.decode(scheduleRaw);
+      return scheduleList;
+    } catch (e) {
+      throw Exception('Error loading data');
+    }
+  }
+
+  List<String> _getLines(List<dynamic> scheduleList) {
+    final List<String> lines = scheduleList.map((item) => item['route_short_name'] as String).toList();
+    return lines.toList();
+  }
+
+  List<String> getStopNamesForRoute(String line, List<dynamic> scheduleList) {
+    final stops = scheduleList.where((item) => item['route_short_name'] == line)
+                              .map((item) => item['stop_name'] as String)
+                              .toList();
+    return stops;
+  }
+
+  List<String> getDestinations(String line, List<dynamic> scheduleList) {
+    final dest = scheduleList.where((item) => item['route_short_name'] == line)
+                              .map((item) => item['trip_headsign'] as String)
+                              .toList();
+    return dest;
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         toolbarHeight: MediaQuery.of(context).size.height * 0.10,
       ),
+
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
 
