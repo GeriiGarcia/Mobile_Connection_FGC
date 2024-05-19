@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Controll variables
   String signal = '0';
-  int stage = 1; // 0: Start, 1: Running, 2: end
+  int stage = 0; // 0: Start, 1: Running, 2: end
   List<bool> startDataGiven = [
     false, // line
     false, // origin
