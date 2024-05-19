@@ -71,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _internetSignal = FlutterInternetSignal();
   Timer? _timer;
-
+  bool started = false;
   // FGC data
   List<dynamic> scheduleList = [];
 
@@ -90,8 +90,12 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> lineItems = ['---'];
   List<String> startStationItems = ['---'];
   List<String> directionItems = ['---'];
-  List<String?> sel_values = ['---', '---', '---'];
-  String selEndValue = '---';
+  List<String?> sel_values = [
+    '---', // linea (S1, S2,...)
+    '---', //origin station
+    '---' // direction
+  ];
+  String selEndValue = '---'; // estació final
   // -------------------------------------------------- Funcions
   // ---------------- Funcions connexio
 
@@ -99,6 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _getInternetSignal();
     });
+  }
+
+  void _stopPeriodicUpdate() {
+    if (_timer != null) {
+      _timer!.cancel();
+      _timer = null;
+    }
   }
 
   Future<void> _getPlatformVersion() async {
@@ -138,10 +149,8 @@ class _MyHomePageState extends State<MyHomePage> {
       _wifiSignal = wifi;
       _wifiSpeed = wifiSpeed;
 
-      String formattedDate =
-          DateFormat('kk:mm:ss').format(getTime());
-      String formattedDay =
-          DateFormat('yyyy-MM-dd').format(getTime());
+      String formattedDate = DateFormat('kk:mm:ss').format(getTime());
+      String formattedDay = DateFormat('yyyy-MM-dd').format(getTime());
       dataDecibels.add([formattedDay, formattedDate, _wifiSignal!]);
       writeData(dataDecibels);
     });
@@ -156,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<File> get _localFile async {
     final path = await _localPath;
     String archivo = getTimeForFile();
-    return File('$path/$archivo.txt');
+    return File('$path/$archivo.JSON');
   }
 
   Future<File> writeData(List<List<dynamic>> list) async {
@@ -181,6 +190,27 @@ class _MyHomePageState extends State<MyHomePage> {
     return file.writeAsString(jsonString);
   }
 
+  void finalSave(List<List<dynamic>> list, String linea, String origen, String destino, String direccion, String t_inicio) async {
+    final file = await _localFile;
+    
+
+    Map<String, String> opciones = {
+      'linea': linea,
+      'origen': origen,
+      'destino': destino,
+      'direccion': direccion,
+      't_inicio': t_inicio
+    };
+
+    Map<String, dynamic> jsonMap = {'options': opciones, 'data': list};
+
+    // Convertir el mapa a una cadena JSON
+    String jsonString = jsonEncode(jsonMap);
+
+    // Escribir la cadena JSON en el archivo
+    file.writeAsString(jsonString);
+  }
+
   List<int> getLast15Elements(List<List<dynamic>> list) {
     if (list.length > 15) {
       list = list.sublist(list.length - 15);
@@ -192,13 +222,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // -------------------------  Fi Funcions Connexio
 
-  // ignore: non_constant_identifier_names
-  String getConnectivity(String) {
-    final random = Random();
-
-    return random.nextInt(100).toString();
-  }
-
   void updateStage(int currentStage) {
     bool canSetState = false;
 
@@ -209,14 +232,24 @@ class _MyHomePageState extends State<MyHomePage> {
       canSetState = true; // Podem cambiar d'estat
       endDataGiven = false;
       selEndValue = '---';
+      _startPeriodicUpdate();
     } else if (stage == 1) {
+      _stopPeriodicUpdate();
       canSetState = true;
     } else if (endDataGiven && stage == 2) {
-      sel_values = ['---', '---', '---'];
+      String linea = sel_values[0]!;
+      String origen = sel_values[1]!;
+      String destino = selEndValue;
+      String direccion = sel_values[2]!;
+      //String t_inicio = getTimeForFile();
+      String t_inicio = dataDecibels[0][1].toString();
+      
+      finalSave(dataDecibels, linea, origen, destino, direccion, t_inicio);
       startDataGiven[0] = false;
       startDataGiven[1] = false;
       startDataGiven[2] = false;
       canSetState = true;
+      sel_values = ['---', '---', '---'];
     }
 
     if (canSetState) {
@@ -310,7 +343,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _getPlatformVersion();
-    _startPeriodicUpdate();
+    //_startPeriodicUpdate();
     _dataLoadingFuture = _loadData();
   }
 
@@ -368,7 +401,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   selectedChoices: sel_values,
                   dataConnection: dataText,
                   selectedEndChoice: selEndValue,
-
                 ),
                 StartStopButton(
                   stage: stage,
