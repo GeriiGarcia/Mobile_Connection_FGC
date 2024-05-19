@@ -204,10 +204,15 @@ class _MyHomePageState extends State<MyHomePage> {
         startDataGiven[2] &&
         stage == 0) {
       canSetState = true; // Podem cambiar d'estat
+      endDataGiven = false;
+      selEndValue = '---';
     } else if (stage == 1) {
       canSetState = true;
     } else if (endDataGiven && stage == 2) {
       sel_values = ['---', '---', '---'];
+      startDataGiven[0] = false;
+      startDataGiven[1] = false;
+      startDataGiven[2] = false;
       canSetState = true;
     }
 
