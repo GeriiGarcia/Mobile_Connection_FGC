@@ -385,7 +385,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               children: <Widget>[
                 CurrentSignalText(
-                  signal: _wifiSignal.toString(),
+                  signal: _mobileSignal.toString(),
                 ), // mostrem la conexió actual en un text
 
                 MainContent(
