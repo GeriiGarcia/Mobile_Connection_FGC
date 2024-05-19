@@ -207,6 +207,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (stage == 1) {
       canSetState = true;
     } else if (endDataGiven && stage == 2) {
+      sel_values = ['---', '---', '---'];
       canSetState = true;
     }
 
@@ -251,7 +252,6 @@ class _MyHomePageState extends State<MyHomePage> {
     endDataGiven = true;
     setState(() {
       selEndValue = endValue!;
-      sel_values = ['---', '---', '---'];
     });
   }
 
