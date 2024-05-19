@@ -139,19 +139,19 @@ class _MyHomePageState extends State<MyHomePage> {
     int? wifiSpeed;
     try {
       mobile = await _internetSignal.getMobileSignalStrength();
-      wifi = await _internetSignal.getWifiSignalStrength();
-      wifiSpeed = await _internetSignal.getWifiLinkSpeed();
+      //wifi = await _internetSignal.getWifiSignalStrength();
+      //wifiSpeed = await _internetSignal.getWifiLinkSpeed();
     } on PlatformException {
       if (kDebugMode) print('Error get internet signal.');
     }
     setState(() {
       _mobileSignal = mobile;
-      _wifiSignal = wifi;
-      _wifiSpeed = wifiSpeed;
+      //_wifiSignal = wifi;
+      //_wifiSpeed = wifiSpeed;
 
       String formattedDate = DateFormat('kk:mm:ss').format(getTime());
       String formattedDay = DateFormat('yyyy-MM-dd').format(getTime());
-      dataDecibels.add([formattedDay, formattedDate, _wifiSignal!]);
+      dataDecibels.add([formattedDay, formattedDate, _mobileSignal!]);
       writeData(dataDecibels);
     });
   }
