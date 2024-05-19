@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Controll variables
   String signal = '0';
-  int stage = 0; // 0: Start, 1: Running, 2: end
+  int stage = 1; // 0: Start, 1: Running, 2: end
   List<bool> startDataGiven = [
     false, // line
     false, // origin
@@ -139,8 +139,10 @@ class _MyHomePageState extends State<MyHomePage> {
       _wifiSpeed = wifiSpeed;
 
       String formattedDate =
-          DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
-      dataDecibels.add([formattedDate, _wifiSignal!]);
+          DateFormat('kk:mm:ss').format(getTime());
+      String formattedDay =
+          DateFormat('yyyy-MM-dd').format(getTime());
+      dataDecibels.add([formattedDay, formattedDate, _wifiSignal!]);
       writeData(dataDecibels);
     });
   }
@@ -166,8 +168,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
     List<Map<String, dynamic>> listAsMap = list.map((sublist) {
       return {
-        "string": sublist[0],
-        "int": sublist[1],
+        "time": sublist[1],
+        "date": sublist[0],
+        "connection": sublist[2],
       };
     }).toList();
 
@@ -184,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     // Extraer el segundo valor de cada sublista.
-    return list.map((sublist) => sublist[1] as int).toList();
+    return list.map((sublist) => sublist[2] as int).toList();
   }
 
   // -------------------------  Fi Funcions Connexio
@@ -319,8 +322,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //String formattedDate = DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
-    //List<int> dataText = getLast15Elements(dataDecibels);
+    String formattedDate = DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
+    List<int> dataText = getLast15Elements(dataDecibels);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -349,7 +352,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               children: <Widget>[
                 CurrentSignalText(
-                  signal: signal,
+                  signal: _wifiSignal.toString(),
                 ), // mostrem la conexió actual en un text
 
                 MainContent(
@@ -363,7 +366,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       getStopNamesForRoute(sel_values[0]!, scheduleList),
                   directionItems: getDestinations(sel_values[0]!, scheduleList),
                   selectedChoices: sel_values,
+                  dataConnection: dataText,
                   selectedEndChoice: selEndValue,
+
                 ),
                 StartStopButton(
                   stage: stage,
