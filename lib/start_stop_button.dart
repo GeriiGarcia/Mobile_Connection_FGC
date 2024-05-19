@@ -7,12 +7,13 @@ class StartStopButton extends StatelessWidget {
   List<bool> startDataGiven;
   bool endDataGiven;
   final Function(int) updateStage;
+  
 
   StartStopButton(
       {required this.stage,
       required this.updateStage,
       required this.startDataGiven,
-      required this.endDataGiven});
+      required this.endDataGiven,});
 
   String changeButtonText() {
     switch (stage) {
