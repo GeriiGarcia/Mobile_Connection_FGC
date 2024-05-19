@@ -15,6 +15,7 @@ class MainContent extends StatelessWidget {
   List<String> startStationItems;
   List<String> directionItems;
   List<String?> selectedChoices;
+  List<int> dataConnection;
 
   MainContent({
     required this.stage,
@@ -25,6 +26,7 @@ class MainContent extends StatelessWidget {
     required this.startStationItems,
     required this.directionItems,
     required this.selectedChoices,
+    required this.dataConnection,
   });
 
   Widget getCurrentMenu(BuildContext context) {
@@ -39,7 +41,9 @@ class MainContent extends StatelessWidget {
           selectedChoices: selectedChoices,
         );
       case 1:
-        return RunningMenu();
+        return RunningMenu(
+          dataConnection: dataConnection,
+        );
       case 2:
         return EndMenu(
           endDataGiven: endDataGiven,

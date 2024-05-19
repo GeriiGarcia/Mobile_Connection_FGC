@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
   
   // Controll variables
   String signal = '0';
-  int stage = 0; // 0: Start, 1: Running, 2: end
+  int stage = 1; // 0: Start, 1: Running, 2: end
   List<bool> startDataGiven = [
     false, // line
     false, // origin
@@ -291,8 +291,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    //String formattedDate = DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
-    //List<int> dataText = getLast15Elements(dataDecibels);
+    String formattedDate = DateFormat('kk:mm:ss yyyy-MM-dd').format(getTime());
+    List<int> dataText = getLast15Elements(dataDecibels);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -317,7 +317,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
               children: <Widget>[
                 CurrentSignalText(
-                  signal: signal,
+                  signal: _wifiSignal.toString(),
                 ), // mostrem la conexió actual en un text
               
                 MainContent(
@@ -329,6 +329,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   startStationItems: getStopNamesForRoute(sel_values[0]!, scheduleList),
                   directionItems: getDestinations(sel_values[0]!, scheduleList),
                   selectedChoices: sel_values,
+                  dataConnection: dataText,
                 ),
                 StartStopButton(
                   stage: stage,
