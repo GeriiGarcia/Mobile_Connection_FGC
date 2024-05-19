@@ -202,7 +202,15 @@ class _MyHomePageState extends State<MyHomePage> {
       't_inicio': t_inicio
     };
 
-    Map<String, dynamic> jsonMap = {'options': opciones, 'data': list};
+     List<Map<String, dynamic>> formattedData = list.map((e) {
+    return {
+      'day': e[0],
+      'time': e[1],
+      'connection': e[2],
+    };
+  }).toList();
+
+    Map<String, dynamic> jsonMap = {'options': opciones, 'data': formattedData};
 
     // Convertir el mapa a una cadena JSON
     String jsonString = jsonEncode(jsonMap);
