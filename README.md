@@ -8,7 +8,7 @@ Going back to this repository, here we heve a couple of images of the APP in acc
 
 
 | ![Menu Principal](Imatges_readme/main_menu.jpeg)  | ![Menu Carro](Imatges_readme/selecting_station.jpeg)  | ![Menu Settings](Imatges_readme/recording.jpeg)  | ![Menu Pagament](Imatges_readme/getting_off.jpeg)  |
-|---|---|
+|---|---|---|-|
 
 The app works as following:
 
